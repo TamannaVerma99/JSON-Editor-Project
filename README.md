@@ -45,4 +45,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Special thanks to the Ajv and Codemirror libraries for their invaluable contributions to JSON Schema validation and code editing functionality.
 
 ---
-**Made with ❤️ by [Your Name]**
+**Made with ❤️ by Tamanna**
