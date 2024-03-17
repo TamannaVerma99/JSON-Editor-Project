@@ -1,115 +1,76 @@
-import { useEffect, useRef } from "react";
+import React, { useState, useCallback } from 'react';
+import CodeMirror from '@uiw/react-codemirror';
+import { json } from "@codemirror/lang-json";
+import Ajv2020 from "ajv/dist/2020"
+import bgValid from '/congratsmsg.gif';
+import bgPrompt from '/ro.gif';
 import Link from 'next/link';
-import hljs from "highlight.js/lib/core";
-import javascript from "highlight.js/lib/languages/javascript";
-import "highlight.js/styles/monokai.css";
-import { useState } from "react";
+const ajv = new Ajv2020({allErrors: true})
+require("ajv-errors")(ajv)
+const schema = {
+  $schema: "https://json-schema.org/draft/2020-12/schema"
+}
+// const schema1 = {
+//   $schema: "https://json-schema.org/draft/2020-12/schema",
+//   type: "array"
+// }
+const schema1=[1,2,3,4,5];
 
+interface editorProps {
+  schemaType: string;
+}
 
-hljs.registerLanguage("javascript", javascript);
+const Hello = (props: editorProps) => {
+  const [value, setValue] = useState("write your json schema here");
+  const [error, setError] = useState<string | null>(null);
+  const [initial, setInitial] = useState(true);
+  const selectedSchema = props.schemaType === "schema1" ? schema1 : schema;
+  const isValid = !error && !initial;
 
-export default function Home() {
-  const [copied, setCopied] = useState(false);
-  const codeRef = useRef<HTMLElement | null>(null); // Specify the type of useRef
- 
-  useEffect(() => {
-    if (codeRef.current) { // Check if codeRef.current is not null
-      hljs.highlightBlock(codeRef.current);
+  const onChange = useCallback((val: string, viewUpdate: any) => {
+    setValue(val);
+    setInitial(false); // Once user starts entering schema, it's not initial anymore
+    try {
+      const data1 = JSON.parse(val);
+      const valid = props.schemaType === "schema" ?ajv.validate(selectedSchema,data1):ajv.validate(data1,selectedSchema);
+      if (!valid) {
+        setError(ajv.errorsText());
+      } else {
+        setError(null);
+      }
+    } catch (error:any) {
+      console.error('Error parsing JSON:', error);
+      setError(error.message); 
     }
   }, []);
-  const copyToClipboard = () => {
-    if (codeRef.current) {
-      navigator.clipboard.writeText(codeRef.current.textContent || '');
-    }
-    setCopied(true);
-
-    // Reset the button text after 2 seconds
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
-  };
 
   return (
-    <main className='mt-0 p-0 h-full w-full flex flex-col items-center bg-gradient-to-r from-startBlue from-1.95% to-endBlue bg-no-repeat'>
-      <header className='text-black w-full h-[85px] bg-white fixed top-0 z-[170] shadow-xl drop-shadow-lg mb-4'>
+    <>
+    <header className='text-black w-full h-[85px] bg-white fixed top-0 z-[170] shadow-xl drop-shadow-lg mb-4'>
         <div className='w-full flex md:justify-between items-center ml-8 2xl:px-12 py-4'>
           <Logo />
         </div>
       </header>
-      <section className='clip-bottom w-full'>
-        <div className='max-w-[1400px] text-center mx-auto mt-24 lg:mt-30'>
-          <h1 className='lg:leading-header text-h1mobile lg:text-h3 font-semibold text-white text-center px-1 md:px-0'>
-          Mastering JSON Arrays
-          </h1>
-          <h3 className='lg:leading-6 text-h5mobile md:text-[20px] text-white mt-4 lg:mx-16 md:mx-2 p-4 flex'>
-          Welcome back, brave adventurer! In this next step of our journey through the JSON tour, we're going to dive deeper into the wonders of JSON arrays.
-          Just like assembling magical artifacts, JSON arrays allow us to organize our data into ordered lists which can hold a myriad of data types, making them an essential tool for any data wizard.
-          </h3>
-          <h1 className='lg:leading-header text-h1mobile lg:text-h3 font-semibold text-white text-center px-1 md:px-0 mx-auto'>
-          Let's Level Up!
-          </h1>
-          <div className='max-w-[700px] text-center lg:mt-2 mb-6 mx-auto'>
-          Imagine you're on a quest to collect magical artifacts from across the land. Each artifact is represented as an element in a JSON array, with its own unique numerical powers. Here's a glimpse
-          </div>
-          <div className='max-w-[700px] lg:w-[700px] md:w-[500px] text-center mx-auto lg:mt-2 relative'>
-  
-  <button
-    className="absolute top-0 right-0 mt-2 mr-2 px-4 py-1 bg-blue-500 text-white rounded"
-    onClick={copyToClipboard}
-  >
-    {copied ? "Copied" : "Copy"}
-  </button>
-  <pre>
-    <code className="javascript" style={{ background: "transparent",backgroundColor:'#2b2b2b',color:"#ffffff !important" ,padding: "20px",borderRadius:"10px"}} ref={codeRef}>
-      {`
-[1, 2, 3, 4, 5]
-                    `}
-    </code>
-  </pre>
-</div>
-<h1 className='lg:leading-header text-h1mobile lg:text-h3 font-semibold text-white text-center px-1 md:px-0 mx-auto'>
-JSON Schema for Magical Artifacts
-          </h1>
-          <div className='max-w-[700px] text-center lg:mt-2 mb-6 mx-auto'>
-          In the realm of JSON, just as our brave adventurers collect magical artifacts, JSON arrays allow us to organize our data into ordered lists. This JSON schema defines an array where each artifact's power is represented by a number, ensuring that our quest for knowledge is guided by precision and clarity.
-          </div>
-          <div className='max-w-[700px] lg:w-[700px] md:w-[500px] text-center mx-auto lg:mt-2 relative'>
-  
-  <button
-    className="absolute top-0 right-0 mt-2 mr-2 px-4 py-1 bg-blue-500 text-white rounded"
-    onClick={copyToClipboard}
-  >
-    {copied ? "Copied" : "Copy"}
-  </button>
-  <pre>
-    <code className="javascript" style={{ background: "transparent",backgroundColor:'#2b2b2b',color:"#ffffff !important" ,padding: "20px",borderRadius:"10px"}} ref={codeRef}>
-      {`
-{
-    "type": "array",
-"items": {
-      "type": "number"
-    }
-}
-
-                    `}
-    </code>
-  </pre>
-</div>
-
-
-          <div className='lg:w-[650px] mx-auto my-10 flex flex-col gap-6 items-center justify-center'>
-          Can you decipher the magic within? This JSON Schema defines an array where each item is a number.
-        Ready to harness the power of JSON Schema? Click the button below to embark on a journey through the JSON Kingdom's second step!
-            <Link href='/editor2' className='flex items-center justify-center rounded border-2 border-white text-white w-[194px] h-[40px] font-semibold'>Try it yourself</Link>
-          </div>
+      <div className='lg:mt-20 flex h-full w-full flex-row bg-gradient-to-r from-startBlue from-1.95% to-endBlue bg-no-repeat'>
+        <div style={{ margin:'1%', color: 'black', height: '100%', width: '50%', background: 'linear-gradient(to right, from-startBlue, to-endBlue)', borderRadius:'8px'}}>
+          <CodeMirror value={value} height="70vh" extensions={[json()]} onChange={onChange} />
         </div>
-      </section>
-    </main>
+        <div id="errorcontainer" style={{ margin:'1%', background: '#00509d', color: 'white', height: '70vh', width: '50%', overflow: 'auto', border:'solid white', borderRadius:'8px',display:'flex',justifyContent:'center',alignItems:'center', backgroundImage: isValid ? `url(${bgValid.src})`: 'none', backgroundSize: 'cover' }}>
+          {value === "write your json schema here" ? ( 
+            <p style={{ padding:'15px' }}>please enter your JSON schema
+ </p>
+          ) : (
+            error ? <p style={{ padding:'15px' }}>{error}</p> : <p style={{ padding:'15px' }}>Excellent! You have entered a valid JSON Schema </p>
+          )}
+        </div>
+      </div>
+    </>
   );
 }
-
 const Logo = () => (
-  <Link href='/' className=''>
-    <img src='/logo.svg' className='h-12 mr-2 ' />
-  </Link>
-);
+    <Link href='/' className=''>
+      <img src='/logo.svg' className='h-12 mr-2 ' />
+    </Link>
+  );
+export default Hello;
+
