@@ -51,7 +51,7 @@ const Hello = (props: editorProps) => {
           <Logo />
         </div>
       </header>
-      <div className='lg:mt-20 flex h-full w-full flex-row bg-gradient-to-r from-startBlue from-1.95% to-endBlue bg-no-repeat'>
+      <div className='lg:mt-8 flex h-full w-full flex-row bg-gradient-to-r from-startBlue from-1.95% to-endBlue bg-no-repeat'>
         <div style={{ margin:'1%', color: 'black', height: '100%', width: '50%', background: 'linear-gradient(to right, from-startBlue, to-endBlue)', borderRadius:'8px'}}>
           <CodeMirror value={value} height="70vh" extensions={[json()]} onChange={onChange} />
         </div>
@@ -73,4 +73,3 @@ const Logo = () => (
     </Link>
   );
 export default Hello;
-
