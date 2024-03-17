@@ -67,6 +67,35 @@ export default function Home() {
     </code>
   </pre>
 </div>
+<h1 className='lg:leading-header text-h1mobile lg:text-h3 font-semibold text-white text-center px-1 md:px-0 mx-auto'>
+JSON Schema for Magical Artifacts
+          </h1>
+          <div className='max-w-[700px] text-center lg:mt-2 mb-6 mx-auto'>
+          In the realm of JSON, just as our brave adventurers collect magical artifacts, JSON arrays allow us to organize our data into ordered lists. This JSON schema defines an array where each artifact's power is represented by a number, ensuring that our quest for knowledge is guided by precision and clarity.
+          </div>
+          <div className='max-w-[700px] lg:w-[700px] md:w-[500px] text-center mx-auto lg:mt-2 relative'>
+  
+  <button
+    className="absolute top-0 right-0 mt-2 mr-2 px-4 py-1 bg-blue-500 text-white rounded"
+    onClick={copyToClipboard}
+  >
+    {copied ? "Copied" : "Copy"}
+  </button>
+  <pre>
+    <code className="javascript" style={{ background: "transparent",backgroundColor:'#2b2b2b',color:"#ffffff !important" ,padding: "20px",borderRadius:"10px"}} ref={codeRef}>
+      {`
+{
+    "type": "array",
+"items": {
+      "type": "number"
+    }
+}
+
+                    `}
+    </code>
+  </pre>
+</div>
+
 
           <div className='lg:w-[650px] mx-auto my-10 flex flex-col gap-6 items-center justify-center'>
           Can you decipher the magic within? This JSON Schema defines an array where each item is a number.
