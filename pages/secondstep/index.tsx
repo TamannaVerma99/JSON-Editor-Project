@@ -63,7 +63,7 @@ export default function Home() {
     <code className="javascript" style={{ background: "transparent",backgroundColor:'#2b2b2b',color:"#ffffff !important" ,padding: "20px",borderRadius:"10px"}} ref={codeRef}>
       {`
 [1, 2, 3, 4, 5]
-                    `}
+                  `}
     </code>
   </pre>
 </div>
