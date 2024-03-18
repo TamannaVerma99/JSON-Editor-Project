@@ -10,11 +10,19 @@ require("ajv-errors")(ajv)
 const schema = {
   $schema: "https://json-schema.org/draft/2020-12/schema"
 }
-// const schema1 = {
-//   $schema: "https://json-schema.org/draft/2020-12/schema",
-//   type: "array"
-// }
+const schema2 = {
+  $schema: "https://json-schema.org/draft/2020-12/schema",
+  
+    "type": "array",
+    "items": {
+      "type": "number"
+    
+  }
+  
+
+}
 const schema1=[1,2,3,4,5];
+
 
 interface editorProps {
   schemaType: string;
@@ -32,7 +40,17 @@ const Hello = (props: editorProps) => {
     setInitial(false); // Once user starts entering schema, it's not initial anymore
     try {
       const data1 = JSON.parse(val);
-      const valid = props.schemaType === "schema" ?ajv.validate(selectedSchema,data1):ajv.validate(data1,selectedSchema);
+      if(selectedSchema==schema1){
+      if (typeof data1 === "object" && Object.keys(data1).length === 0) {
+        setError("Schema must define an array of numbers");
+        return;
+      }
+      if (data1.type !== "array" || data1.items?.type !== "number") {
+        setError("Schema must define an array of numbers");
+        return;
+      }
+    }
+      const valid = props.schemaType === "schema" ?ajv.validate(selectedSchema,data1):(ajv.validate(data1,selectedSchema)&&ajv.validate(schema2,selectedSchema));
       if (!valid) {
         setError(ajv.errorsText());
       } else {
