@@ -1,6 +1,6 @@
 # JSON Schema Tour 🚀
 
-Welcome to the JSON Schema Tour! This beginner-friendly project is designed to take you on an exciting journey into the world of JSON and JSON Schema validation. Whether you're a seasoned developer or just starting out, this tour will guide you through the basics of JSON Schema validation using the latest Draft 2020-12 specifications.
+Welcome to the JSON Schema Tour! This beginner-friendly project is designed to take you on an exciting journey into the world of JSON and JSON Schema validation. Whether you're a seasoned developer or just starting out, this tour will guide you through the basics of JSON Schema using the latest Draft 2020-12 specifications.
 
 ## Features
 
@@ -17,6 +17,32 @@ To get started with the JSON Schema Tour, follow these simple steps:
 2. Install dependencies using `npm install` or `yarn install`.
 3. Start the development server using `npm run dev` or `yarn dev`.
 4. Explore the tour by navigating to the provided URLs in your browser.
+
+   
+## File Structure
+```
+project/
+|-- components/
+|   |-- CodeEditor.tsx               // Component for the code editor
+|
+|-- pages/
+|   |-- editor1/
+|   |   |-- index.tsx                // First step schema validation
+|   |
+|   |-- editor2/
+|   |   |-- index.tsx                // Second step schema validation
+|   |
+|   |-- firststep/
+|   |   |-- index.tsx                // Tutorial for writing a JSON Schema
+|   |
+|   |-- secondstep/
+|   |   |-- index.tsx                // Tutorial for defining an array (Step 2)
+|   |
+|   |-- index.tsx                    // Welcome page
+```
+ 
+
+
 
 ## Usage
 
