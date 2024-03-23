@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
-import Hello from '~/components/Hello';
+import Hello from '~/components/codeeditor';
 const App1: React.FC = () => { 
   return (
     <>
