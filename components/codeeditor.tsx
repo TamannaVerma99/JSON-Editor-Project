@@ -10,26 +10,15 @@ require("ajv-errors")(ajv)
 const schema = {
   $schema: "https://json-schema.org/draft/2020-12/schema"
 }
-const schema2 = {
-  $schema: "https://json-schema.org/draft/2020-12/schema",
-  
-    "type": "array",
-    "items": {
-      "type": "number"
-    
-  }
-  
 
-}
-const schema1=[1,2,3,4,5];
-
+const schema1=[1,2,"3",4,5];
 
 interface editorProps {
   schemaType: string;
 }
 
 const Hello = (props: editorProps) => {
-  const [value, setValue] = useState("write your json schema here");
+  const [value, setValue] = useState(`write your json schema here including "$schema": "https://json-schema.org/draft/2020-12/schema"`);
   const [error, setError] = useState<string | null>(null);
   const [initial, setInitial] = useState(true);
   const selectedSchema = props.schemaType === "schema1" ? schema1 : schema;
@@ -40,27 +29,32 @@ const Hello = (props: editorProps) => {
     setInitial(false); // Once user starts entering schema, it's not initial anymore
     try {
       const data1 = JSON.parse(val);
-      if(selectedSchema==schema1){
-      if (typeof data1 === "object" && Object.keys(data1).length === 0) {
-        setError("Schema must define an array of numbers");
+      if (!data1["$schema"]) {
+        setError("Please include the '$schema' keyword for Draft 2020-12.");
         return;
       }
-      if (data1.type !== "array" || data1.items?.type !== "number") {
-        setError("Schema must define an array of numbers");
-        return;
+      if (selectedSchema == schema1) {
+        if (typeof data1 === "object" && Object.keys(data1).length === 0) {
+          setError("Schema must define an array of numbers");
+          return;
+        }
+        if (data1.type !== "array" || data1.items?.type !== "number") {
+          setError("Schema must define an array of numbers");
+          return;
+        }
       }
-    }
-      const valid = props.schemaType === "schema" ?ajv.validate(selectedSchema,data1):(ajv.validate(data1,selectedSchema)&&ajv.validate(schema2,selectedSchema));
+      const valid = props.schemaType === "schema" ? ajv.validate(selectedSchema, data1) : !(ajv.validate(data1, selectedSchema));
       if (!valid) {
         setError(ajv.errorsText());
       } else {
         setError(null);
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error('Error parsing JSON:', error);
-      setError(error.message); 
+      setError(error.message);
     }
   }, []);
+  
 
   return (
     <>
@@ -74,7 +68,7 @@ const Hello = (props: editorProps) => {
           <CodeMirror value={value} height="70vh" extensions={[json()]} onChange={onChange} />
         </div>
         <div id="errorcontainer" style={{ margin:'1%', background: '#00509d', color: 'white', height: '70vh', width: '50%', overflow: 'auto', border:'solid white', borderRadius:'8px',display:'flex',justifyContent:'center',alignItems:'center', backgroundImage: isValid ? `url(${bgValid.src})`: 'none', backgroundSize: 'cover' }}>
-          {value === "write your json schema here" ? ( 
+          {value === 'write your json schema here including "$schema": "https://json-schema.org/draft/2020-12/schema"' ? ( 
             <p style={{ padding:'15px' }}>please enter your JSON schema
  </p>
           ) : (
