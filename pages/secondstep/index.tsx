@@ -1,32 +1,38 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from 'next/link';
-import hljs from "highlight.js/lib/core";
-import javascript from "highlight.js/lib/languages/javascript";
 import "highlight.js/styles/monokai.css";
-import { useState } from "react";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 
-hljs.registerLanguage("javascript", javascript);
+
 
 export default function Home() {
   const [copied, setCopied] = useState(false);
-  const codeRef = useRef<HTMLElement | null>(null); // Specify the type of useRef
-
-  useEffect(() => {
-    if (codeRef.current) { // Check if codeRef.current is not null
-      hljs.highlightBlock(codeRef.current);
-    }
-  }, []);
-
+  const codeRef = useRef<HTMLDivElement>(null); // Specify the type of useRef
+ 
   const copyToClipboard = () => {
     if (codeRef.current) {
-      navigator.clipboard.writeText(codeRef.current.textContent || '');
+      const textArea = document.createElement('textarea');
+      textArea.value = codeRef.current.textContent || '';
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
       setCopied(true);
-      // Reset the "Copied" state after 2 seconds
+
+      // Reset the button text after 2 seconds
       setTimeout(() => {
         setCopied(false);
       }, 2000);
     }
   };
+  useEffect(() => {
+    if (codeRef.current) {
+      const preElement = codeRef.current.querySelector('pre');
+      if (preElement) {
+        preElement.style.textAlign = 'center';
+      }
+    }
+  }, []);
 
   return (
     <main className='mt-0 p-0 h-full w-full flex flex-col items-center bg-gradient-to-r from-startBlue from-1.95% to-endBlue bg-no-repeat'>
@@ -50,11 +56,9 @@ export default function Home() {
             Imagine you're on a quest to collect magical artifacts from across the land. Each artifact is represented as an element in a JSON array, with its own unique numerical powers. Here's a glimpse
           </div>
           <div className='max-w-[700px] lg:w-[700px] md:w-[500px] text-center mx-auto lg:mt-2 '>
-            <pre>
-              <code style={{ background: "transparent", backgroundColor: '#2b2b2b', color: "#ffffff !important", padding: "20px", borderRadius: "10px" }} ref={codeRef}>
-                {`               [1, 2, 3, 4, 5]                 `}
-              </code>
-            </pre>
+          <SyntaxHighlighter language="javascript" >
+                {`                              [1, 2, 3, 4, 5]                 `}</SyntaxHighlighter>
+             
             <button
               className="absolute top-0 right-0 mt-2 mr-2 px-4 py-1 bg-blue-500 text-white rounded"
               onClick={copyToClipboard}
@@ -69,8 +73,8 @@ export default function Home() {
             In the realm of JSON, just as our brave adventurers collect magical artifacts, JSON arrays allow us to organize our data into ordered lists. This JSON schema defines an array where each artifact's power is represented by a number, ensuring that our quest for knowledge is guided by precision and clarity.
           </div>
           <div className='max-w-[700px] lg:w-[700px] md:w-[500px] text-center mx-auto lg:mt-2 relative'>
-            <pre>
-              <code className="javascript" style={{ background: "transparent", backgroundColor: '#2b2b2b', color: "#ffffff !important", padding: "20px", borderRadius: "10px" }} ref={codeRef}>
+          <div ref={codeRef}>
+          <SyntaxHighlighter language="javascript" >
                 {`
 {
     "type": "array",
@@ -79,8 +83,8 @@ export default function Home() {
     }
 }
                 `}
-              </code>
-            </pre>
+           </SyntaxHighlighter>
+           </div>
             <button
               className="absolute top-0 right-0 mt-2 mr-2 px-4 py-1 bg-blue-500 text-white rounded"
               onClick={copyToClipboard}
