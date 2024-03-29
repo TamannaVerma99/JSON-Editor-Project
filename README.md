@@ -4,7 +4,7 @@ Welcome to the JSON Schema Tour! This beginner-friendly project is designed to t
 
 ## Features
 
-- **Next.js 13**: Built using the latest version of Next.js, a React framework that makes server-side rendering and static site generation simple and intuitive.
+- **Next.js 14.1.3**: Built using the latest version of Next.js, a React framework that makes server-side rendering and static site generation simple and intuitive.
 - **JSON Schema Validation**: Learn how to validate JSON data using the JSON Schema Draft 2020-12 specifications.
 - **Ajv Library**: Implements JSON Schema validation using the Ajv library, a fast and powerful validator for JSON data.
 - **Code Editor**: Practice writing JSON Schemas in a code editor powered by the Codemirror library, complete with syntax highlighting and error checking.
