@@ -29,7 +29,7 @@ const Hello = (props: editorProps) => {
     setInitial(false); // Once user starts entering schema, it's not initial anymore
     try {
       const data1 = JSON.parse(val);
-      if (!data1["$schema"]) {
+      if (!data1["$schema"] || data1["$schema"] !== "https://json-schema.org/draft/2020-12/schema") {
         setError("Please include the '$schema' keyword for Draft 2020-12.");
         return;
       }
